@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  mariadb_master:
+    image: mariadb:10.6
+    container_name: mariadb_master
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_DATABASE=demo
+      - MYSQL_USER=replica
+      - MYSQL_PASSWORD=replica_pass
+    volumes:
+      - ./master:/var/lib/mysql
+    ports:
+      - 3307:3306
+    command: --server-id=1 --log-bin=mysql-bin --binlog-format=ROW
+    networks:
+      - mariadb_net
+
+  mariadb_slave:
+    image: mariadb:10.6
+    container_name: mariadb_slave
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpass
+    ports:
+      - 3308:3306
+    command: --server-id=2
+    networks:
+      - mariadb_net
+
+networks:
+  mariadb_net:

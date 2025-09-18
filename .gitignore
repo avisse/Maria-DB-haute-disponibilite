@@ -1,0 +1,21 @@
+# Volumes de données
+data/
+*/data/
+master/data/
+
+# Dumps & binlogs locaux
+*.sql
+*.sql.gz
+*.tar
+*.tar.gz
+
+# Secrets/ENV
+.env
+*.env
+
+# Divers
+*.log
+*.pid
+.DS_Store
+.vscode/
+.idea/

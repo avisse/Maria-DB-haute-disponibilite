@@ -1,0 +1,16 @@
+# ---------- MariaDB / MySQL base ----------
+MYSQL_ROOT_PASSWORD=changeme-root
+MYSQL_DATABASE=demo
+MYSQL_USER=app
+MYSQL_PASSWORD=changeme-app
+
+# ---------- Replication user (example) ----------
+REPL_USER=repl
+REPL_PASSWORD=changeme-repl
+
+# ---------- Master connection (used during CHANGE MASTER TO) ----------
+MASTER_HOST=master
+MASTER_PORT=3306
+# Fill these after SHOW MASTER STATUS on the master:
+MASTER_LOG_FILE=
+MASTER_LOG_POS=

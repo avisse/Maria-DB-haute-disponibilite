@@ -4,7 +4,7 @@
 
 ---
 
-## 🎯 Objectifs
+##  Objectifs
 
 - Déployer une réplication **Master ➜ Slave** basée sur **binlogs** (format **ROW**).
 - Garantir la **persistance** des données (volumes) et l’**isolement réseau** (bridge dédié).
@@ -13,7 +13,7 @@
 
 ---
 
-## 🧱 Architecture
+## Architecture
 
 ```
 [Docker network: dbnet]
@@ -38,7 +38,7 @@
 
 ---
 
-## 🗂️ Arborescence du dépôt
+## 🗂Arborescence du dépôt
 
 ```
 mariadb-ha-replication/
@@ -57,7 +57,7 @@ mariadb-ha-replication/
 
 ---
 
-## 🔧 Prérequis
+##  Prérequis
 
 - Hôte Debian 12 (ou toute machine avec **Docker** + **Docker Compose v2**).
 - Accès Internet pour tirer les images.
@@ -65,7 +65,7 @@ mariadb-ha-replication/
 
 ---
 
-## ⚙️ Fichiers clés
+## ⚙Fichiers clés
 
 ### 1) `docker-compose.yml`
 
@@ -149,11 +149,11 @@ REPL_USER=repl
 REPL_PASSWORD=ChangeMeRepl!
 ```
 
-> Copiez ce fichier en `.env` puis remplacez les valeurs par des secrets **forts**.
+
 
 ---
 
-## 🚀 Mise en route (pas à pas)
+##  Mise en route (pas à pas)
 
 ### 1. Démarrer l’infra
 
@@ -211,7 +211,7 @@ Vous devez voir :
 
 ---
 
-## ✅ Test de validation
+##  Test de validation
 
 Créer une table et une ligne **sur le master** :
 
@@ -235,9 +235,9 @@ docker exec -it mariadb_slave mariadb -uroot -p"$MYSQL_ROOT_PASSWORD" -e "
 
 ---
 
-## 🔐 Sécurité & bonnes pratiques
+##  Sécurité & bonnes pratiques
 
-- **Ne pas** versionner `.env`, `*.sql`, `data/` → secrets et données restent hors Git.
+- versionner `.env`, `*.sql`, `data/` → secrets et données restent hors Git.
 - Utilisateur de réplication **dédié** (`REPL_USER`) avec privilèges **minimaux**.
 - `read_only=ON` côté slave pour éviter une écriture accidentelle.
 - La **réplication n’est pas une sauvegarde** : prévoir des **backups** (dumps, snapshots) + **tests de restauration**.
@@ -245,7 +245,7 @@ docker exec -it mariadb_slave mariadb -uroot -p"$MYSQL_ROOT_PASSWORD" -e "
 
 ---
 
-## 🛠️ Dépannage rapide
+## 🛠Dépannage rapide
 
 - **`Slave_IO_Running/Slave_SQL_Running = No`**  
   Vérifier `MASTER_HOST/USER/PASSWORD`, `MASTER_LOG_FILE/POS`, réseau (`docker exec mariadb_slave ping mariadb_master`), et lire `Last_IO_Error` / `Last_SQL_Error` dans `SHOW SLAVE STATUS\G`.
@@ -258,7 +258,7 @@ docker exec -it mariadb_slave mariadb -uroot -p"$MYSQL_ROOT_PASSWORD" -e "
 
 ---
 
-## 🧪 Commandes utiles
+## Commandes utiles
 
 ```bash
 # Shell rapide dans un conteneur
@@ -275,17 +275,3 @@ docker compose down
 ```
 
 ---
-
-## 🗣️ Pitch (1 minute)
-
-> “J’ai déployé une **réplication MariaDB Master ➜ Slave** avec **Docker Compose**.  
-> Deux services (`mariadb_master`, `mariadb_slave`) sur un réseau privé et des **volumes persistants**.  
-> Le master active `log_bin` en **ROW** ; j’ai créé un **user de réplication** dédié, relevé `SHOW MASTER STATUS`, puis **attaché** le slave avec `CHANGE MASTER TO`.  
-> La réplication est **validée** par un test de création de table/ligne reproduite côté slave.  
-> La doc couvre la **sécurité**, la **procédure** et un **guide de dépannage** pour être rejouée par n’importe qui.”
-
----
-
-## 📄 Licence
-
-Libre d’utilisation à des fins pédagogiques / démonstratives. Adapter en production (sécurité, backups, monitoring, GTID, failover, etc.).
